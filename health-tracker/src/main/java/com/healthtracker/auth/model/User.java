@@ -1,6 +1,7 @@
 package com.healthtracker.auth.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -10,14 +11,36 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
+    @Min(value = 1, message = "Age must be greater than 0")
+    @Max(value = 120, message = "Age must be less than 120")
     private int age;
+
+    @NotBlank(message = "Gender is required")
     private String gender;
+
+    @Min(value = 50, message = "Height must be at least 50cm")
+    @Max(value = 300, message = "Height must be less than 300cm")
     private double height;
+
+    @Min(value = 1, message = "Weight must be greater than 0")
+    @Max(value = 500, message = "Weight must be less than 500kg")
     private double weight;
+
+    @NotBlank(message = "Activity level is required")
     private String activityLevel;
+
+    private String role;
     
 	public Long getId() {
 		return id;
@@ -72,6 +95,12 @@ public class User {
 	}
 	public void setActivityLevel(String activityLevel) {
 		this.activityLevel = activityLevel;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role= role;
 	}
 
     

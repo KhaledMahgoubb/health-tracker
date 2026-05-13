@@ -14,37 +14,50 @@
                     <p class="text-danger" th:if="${error}" th:text="${error}"></p>
                     <form th:action="@{/register}" th:object="${user}" method="post">
                         <div class="mb-3">
-                            <input type="text" class="form-control" th:field="*{name}" placeholder="Full Name"/>
-                        </div>
-                        <div class="mb-3">
-                            <input type="email" class="form-control" th:field="*{email}" placeholder="Email"/>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" th:field="*{password}" placeholder="Password"/>
-                        </div>
-                        <div class="mb-3">
-                            <input type="number" class="form-control" th:field="*{age}" placeholder="Age"/>
-                        </div>
-                        <div class="mb-3">
-                            <select class="form-select" th:field="*{gender}">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <input type="number" class="form-control" th:field="*{height}" placeholder="Height (cm)"/>
-                        </div>
-                        <div class="mb-3">
-                            <input type="number" class="form-control" th:field="*{weight}" placeholder="Weight (kg)"/>
-                        </div>
-                        <div class="mb-3">
-                            <select class="form-select" th:field="*{activityLevel}">
-                                <option value="SEDENTARY">Sedentary</option>
-                                <option value="LIGHT">Light</option>
-                                <option value="MODERATE">Moderate</option>
-                                <option value="ACTIVE">Active</option>
-                            </select>
-                        </div>
+						    <input type="text" class="form-control" th:field="*{name}" placeholder="Full Name"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <input type="email" class="form-control" th:field="*{email}" placeholder="Email"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <input type="password" class="form-control" th:field="*{password}" placeholder="Password"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <input type="number" class="form-control" th:field="*{age}" placeholder="Age"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <select class="form-select" th:field="*{gender}">
+						        <option value="male">Male</option>
+						        <option value="female">Female</option>
+						    </select>
+						</div>
+						
+						<div class="mb-3">
+						    <input type="number" class="form-control" th:field="*{height}" placeholder="Height (cm)"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('height')}" th:errors="*{height}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <input type="number" class="form-control" th:field="*{weight}" placeholder="Weight (kg)"/>
+						    <small class="text-danger" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></small>
+						</div>
+						
+						<div class="mb-3">
+						    <select class="form-select" th:field="*{activityLevel}">
+						        <option value="SEDENTARY">Sedentary</option>
+						        <option value="LIGHT">Light</option>
+						        <option value="MODERATE">Moderate</option>
+						        <option value="ACTIVE">Active</option>
+						    </select>
+						</div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
                     <p class="text-center mt-3">Already have an account? <a href="/login">Login</a></p>

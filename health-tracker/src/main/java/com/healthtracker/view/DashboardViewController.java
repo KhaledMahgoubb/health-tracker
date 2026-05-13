@@ -7,6 +7,7 @@ import com.healthtracker.dailylog.service.DailyLogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class DashboardViewController {
@@ -19,8 +20,11 @@ public class DashboardViewController {
         this.dailyLogService = dailyLogService;
     }
 
-    @GetMapping("/dashboard/{userId}")
-    public String dashboard(@PathVariable Long userId, Model model) {
+    @GetMapping("/user/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
         User user = userService.getUserById(userId);
         double tdee = userService.calculateTDEE(user);
         double bmi = userService.calculateBMI(user);

@@ -7,13 +7,13 @@
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/dashboard/{id}(id=${user.id})}">Health Tracker</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" th:href="@{/dashboard/{id}(id=${user.id})}">Dashboard</a>
-            <a class="nav-link" th:href="@{/meals/{id}(id=${user.id})}">Meals</a>
-            <a class="nav-link" th:href="@{/progress/{id}(id=${user.id})}">Progress</a>
-            <a class="nav-link" href="/logout">Logout</a>
-        </div>
+        <a class="navbar-brand" href="/user/dashboard">Health Tracker</a>
+		<div class="navbar-nav ms-auto">
+		    <a class="nav-link" href="/user/dashboard">Dashboard</a>
+		    <a class="nav-link" href="/user/meals">Meals</a>
+		    <a class="nav-link" href="/user/progress">Progress</a>
+		    <a class="nav-link" href="/logout">Logout</a>
+		</div>
     </div>
 </nav>
 <div class="container mt-4">
@@ -35,8 +35,8 @@
         <div class="card-body">
             <h5>Daily Check-In</h5>
             <p class="text-muted">Mark today as completed</p>
-            <form th:action="@{/progress/{id}/checkin(id=${user.id})}" method="post">
-                <button type="submit" class="btn btn-primary">Check In Today</button>
+			<form action="/user/progress/checkin" method="post">        
+				<button type="submit" class="btn btn-primary">Check In Today</button>
             </form>
         </div>
     </div>
@@ -44,8 +44,8 @@
         <div class="card-body">
             <h5>Weekly Update</h5>
             <p class="text-muted">You have completed 7 days — update your stats!</p>
-            <form th:action="@{/progress/{id}/update(id=${user.id})}" method="post">
-                <div class="mb-3">
+				<form action="/user/progress/update" method="post">                
+				<div class="mb-3">
                     <input type="number" class="form-control" name="newWeight" placeholder="New weight (kg)"/>
                 </div>
                 <div class="mb-3">

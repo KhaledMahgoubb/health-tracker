@@ -1,7 +1,13 @@
 package com.healthtracker.auth.service;
 
 import com.healthtracker.auth.model.User;
+import com.healthtracker.auth.repository.UserProgressRepository;
 import com.healthtracker.auth.repository.UserRepository;
+import com.healthtracker.auth.model.UserProgress;
+import java.util.Optional;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,17 +15,20 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserProgressService progressService;
+    private final UserProgressRepository progressRepository;
 
-    public UserService(UserRepository userRepository,UserProgressService progressService) {
+    public UserService(UserRepository userRepository,UserProgressService progressService, UserProgressRepository progressRepository) {
         this.userRepository = userRepository;
         this.progressService = progressService;
+        this.progressRepository = progressRepository;
     }
 
     public User registerUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
-        User saved = userRepository.save(user); 
+        user.setRole("USER"); // default role
+        User saved = userRepository.save(user);
         progressService.initProgress(saved);
         return saved;
     }
@@ -60,5 +69,18 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        // delete progress first
+        Optional<UserProgress> progress = progressRepository.findByUserId(id);
+        progress.ifPresent(p -> progressRepository.delete(p));
+        
+        // delete the user
+        userRepository.deleteById(id);
     }
 }

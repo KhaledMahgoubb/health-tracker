@@ -7,6 +7,7 @@ import com.healthtracker.auth.service.UserProgressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProgressViewController {
@@ -19,8 +20,11 @@ public class ProgressViewController {
         this.userService = userService;
     }
 
-    @GetMapping("/progress/{userId}")
-    public String progressPage(@PathVariable Long userId, Model model) {
+    @GetMapping("/user/progress")
+    public String progressPage(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
         User user = userService.getUserById(userId);
         UserProgress progress = progressService.getProgress(userId);
         model.addAttribute("user", user);
@@ -28,21 +32,27 @@ public class ProgressViewController {
         return "progress";
     }
 
-    @PostMapping("/progress/{userId}/checkin")
-    public String checkIn(@PathVariable Long userId, Model model) {
+    @PostMapping("/user/progress/checkin")
+    public String checkIn(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
         try {
             progressService.checkIn(userId);
         } catch (RuntimeException e) {
-            // already checked in today, just redirect back
+            // already checked in today
         }
-        return "redirect:/progress/" + userId;
+        return "redirect:/user/progress";
     }
 
-    @PostMapping("/progress/{userId}/update")
-    public String weeklyUpdate(@PathVariable Long userId,
+    @PostMapping("/user/progress/update")
+    public String weeklyUpdate(HttpSession session,
                                @RequestParam double newWeight,
                                @RequestParam String newActivityLevel) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
         progressService.updateWeeklyInfo(userId, newWeight, newActivityLevel);
-        return "redirect:/progress/" + userId;
+        return "redirect:/user/progress";
     }
 }
