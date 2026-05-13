@@ -3,6 +3,8 @@ package com.healthtracker.auth.service;
 import com.healthtracker.auth.model.User;
 import com.healthtracker.auth.model.UserProgress;
 import com.healthtracker.auth.repository.UserProgressRepository;
+import com.healthtracker.auth.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ public class UserProgressService {
 
     @Autowired
     private UserProgressRepository progressRepo;
+    private UserRepository userRepository;
+
 
     // Called when user presses the end-of-day button
     public UserProgress checkIn(Long userId) {
@@ -73,6 +77,8 @@ public class UserProgressService {
         User user = progress.getUser();
         user.setWeight(newWeight);
         user.setActivityLevel(newActivityLevel);
+        userRepository.save(user);
+
 
         // Lock again after update
         progress.setWeeklyUpdateUnlocked(false);

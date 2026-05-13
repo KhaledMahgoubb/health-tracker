@@ -21,7 +21,7 @@ public class AuthController {
 
     @GetMapping("/bmi/{id}")
     public ResponseEntity<Double> getBMI(@PathVariable Long id) {
-        // coming soon
-        return ResponseEntity.ok(0.0);
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(userService.calculateBMI(user));
     }
 }

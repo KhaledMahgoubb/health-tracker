@@ -8,16 +8,20 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserProgressService progressService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,UserProgressService progressService) {
         this.userRepository = userRepository;
+        this.progressService = progressService;
     }
 
     public User registerUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
-        return userRepository.save(user);
+        User saved = userRepository.save(user); 
+        progressService.initProgress(saved);
+        return saved;
     }
 
     public double calculateBMI(User user) {
@@ -46,5 +50,10 @@ public class UserService {
             case "ACTIVE":    return bmr * 1.725;
             default:          return bmr;
         }
+    }
+    
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

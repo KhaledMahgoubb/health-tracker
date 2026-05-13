@@ -34,7 +34,7 @@ public class DailyLogService {
 
         // Geb el user men database
         // 3amel cast 3shan UserRepository fe project raw type
-        User user = (User) userRepository.findById(userId)
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Geb el meal men database
